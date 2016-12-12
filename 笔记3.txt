@@ -1,0 +1,257 @@
+StringBuffer：
+	线程安全的可变字符序列。一个类似于 String 的字符串缓冲区，但不能修改。
+虽然在任意时间点上它都包含某种特定的字符序列，但通过某些方法调用可以改变该序列的长度和内容。 
+可将字符串缓冲区安全地用于多个线程。
+可以在必要时对这些方法进行同步，因此任意特定实例上的所有操作就好像是以串行顺序发生的，
+该顺序与所涉及的每个线程进行的方法调用顺序一致。 
+StringBuffer 上的主要操作是 append 和 insert 方法，可重载这些方法，以接受任意类型的数据。
+每个方法都能有效地将给定的数据转换成字符串，然后将该字符串的字符追加或插入到字符串缓冲区中。
+append 方法始终将这些字符添加到缓冲区的末端；而 insert 方法则在指定的点添加字符。 
+例如，如果 z 引用一个当前内容为 "start" 的字符串缓冲区对象，则此方法调用 z.append("le") 
+会使字符串缓冲区包含 "startle"，而 z.insert(4, "le") 将更改字符串缓冲区，使之包含 "starlet"。 
+通常，如果 sb 引用 StringBuilder 的一个实例，则 sb.append(x) 和 sb.insert(sb.length(), x) 具有相同的效果。 
+当发生与源序列有关的操作（如源序列中的追加或插入操作）时，该类只在执行此操作的字符串缓冲区上而不是在源上实现同步。 
+每个字符串缓冲区都有一定的容量。只要字符串缓冲区所包含的字符序列的长度没有超出此容量，就无需分配新的内部缓冲区数组。
+如果内部缓冲区溢出，则此容量自动增大。从 JDK 5 开始，为该类补充了一个单个线程使用的等价类，即 StringBuilder。
+与该类相比，通常应该优先使用 StringBuilder 类，因为它支持所有相同的操作，但由于它不执行同步，所以速度更快。 
+安全--同步--数据是安全
+不安全--不同步--效率高一些
+安全和效率永远不会同时出现
+安全：医院的网站，银行的网站
+效率：新闻的网站，论坛之类的
+StringBuffer 和String的区别：
+	StringBuffer 线程安全的可变字符序列。长度和类容是可变的后者不可变
+	String 长度和类容不可变
+	如果使用前者做字符串的拼接，不会浪费太多的资源
+StringBuffer的构造方法：
+	StringBuffer（）：无参构造方法
+	StringBuffer（int capacity）;指定字符串缓冲区对象的容量 
+	public StringBuffer(String str):指定字符串内容缓冲区对象的容量
+StringBuffer的方法：
+	public int capacity():返回当前容量。理论值
+	public int length()：返回长度（字符数）。实际值
+StringBuffer的功能：
+	A:添加功能：
+		public StringBuffer append（String str）可以把任意字符添加到字符串缓冲区，并返回字符串缓冲区本身
+		public StringBuffer insert(int offset,String str):在指定的位置把任意类型的数据
+		插入到字符串缓冲区里面，并返回字符串缓冲区本身
+	B:删除功能：
+		public StringBuffer deleteCharAt(int index);删除指定位置的字符，并返回本身
+		public StringBuffer delect(int start,int end);删除从指定位置开始到指定位置结束的内容，并返回本身
+	C:替换功能：
+		public StringBuffer replace（int start,int end,String str）:从start开始到end用str替换
+	D:翻转功能：
+		public StringBuffer reverse（）、
+	E:截取功能：
+		public String substring(int start);注意返回值类型，stringBuffer本身不变
+		public String substring(int start,int end);
+String 和StringBuffer之间的转换
+	A类转换B类是为了实现B的功能。
+	B转换为A是为了使用A的类型
+	StringBuffer是不能直接把字符串的值直接赋值该StringBuffer
+StringBuilder：不安全，单线程，不同步
+	一个可变的字符序列。此类提供一个与 StringBuffer 兼容的 API，但不保证同步。该类被设计用作
+	StringBuffer 的一个简易替换，用在字符串缓冲区被单个线程使用的时候（这种情况很普遍）。
+	如果可能，建议优先采用该类，因为在大多数实现中，它比 StringBuffer 要快。 
+	在 StringBuilder 上的主要操作是 append 和 insert 方法，可重载这些方法，以接受任意类型的数据。
+	每个方法都能有效地将给定的数据转换成字符串，然后将该字符串的字符追加或插入到字符串生成器中。
+	append 方法始终将这些字符添加到生成器的末端；而 insert 方法则在指定的点添加字符。 
+	例如，如果 z 引用一个当前内容为 "start" 的字符串的生成器对象，
+	则该方法调用 z.append("le") 将使字符串生成器包含 "startle"，
+	而 z.insert(4, "le") 将更改字符串生成器，使之包含 "starlet"。 
+	通常，如果 sb 引用 StringBuilder 的实例，则 sb.append(x) 和 sb.insert(sb.length(), x) 具有相同的效果。
+	每个字符串生成器都有一定的容量。只要字符串生成器所包含的字符序列的长度没有超出此容量，就无需分配新的内部缓冲区。
+	如果内部缓冲区溢出，则此容量自动增大。 
+	将 StringBuilder 的实例用于多个线程是不安全的。
+	如果需要这样的同步，则建议使用 StringBuffer。
+面试题：
+	1.String StringBuffer StringBuilder的区别：
+		A:String是长度和类容不可变的而StringBuffer和StringBuilder是可变的
+		B:StringBuffer是同步的数据安全，效率低，StringBuilder是不同步的，数据不安全但效率高
+	2.StringBuffer和数组的区别：
+		二者都可以看成是容器，装其他数据
+		但是，StringBuffer的数据最终是一个字符串数据
+		而数组可以放置多种数据，但必须是同一数据类型
+	3.形式参数问题：
+		String作为参数传递 效果和基本类型作为参数传递一样的。即形式参数的改变不影响实际参数的改变
+		StringBuffer作为参数传递 效果为引用类型一样，即 形式参数的改变影响实际参数的改变
+		形式参数：
+			基本类型：形式参数的改变不影响实际参数的改变
+			引用类型：形式参数的改变影响实际参数的改变
+	冒泡排序：
+			思想：相邻元素两两比较，大的往后放。第一次完毕后，最大值就出现在了最大索引处。
+					同理，继续，即可得到一个排好序的数组
+			规律：
+				1：两两比较大的往后放。
+				2：每一次比较完毕后，下一次就会减少一个元素的比较
+				3：第一次比较，有0各元素不比	
+				   第二次比较，有1个元素不比
+				   ...
+				4:总共需要比较数组长度-1次。
+			代码：
+				public  static void sort(int[] a) {
+				// TODO Auto-generated method stub
+				for(int i=0;i<a.length-1;i++){
+					for(int j=0;j<a.length-1-i;j++){
+						if(a[j]>a[j+1]){
+							int temp=a[j];
+							a[j]=a[j+1];
+							a[j+1]=temp;
+						}
+					}
+				}
+				System.out.println("排序后的数组：");
+				PrintArray(a);
+				}
+	选择排序:
+			思想：从0索引开始，依次和后面元素比较，晓得往前放，第一次完毕，最小值出现
+					在了最小索引处,其他的同理即可得到一个排好序的数组。
+			规律：
+				1：第一次是从0索引开始和其他的进行比较
+				   第二次是从1索引开始和其他的进行比较
+				   ...
+				2:最后依次是数组长度-2的元素和数组长度-1的元素比较次
+			代码：
+				public static void selectSort(int a[]){
+				for(int i=0;i<a.length-1;i++){
+					for(int j=i+1;j<a.length;j++){
+						if(a[j]<a[i]){
+							int temp=a[j];
+							a[j]=a[i];
+							a[i]=temp;
+							}
+						}
+					System.out.println("第"+i+"次比较后");
+					PrintArray(a);
+					System.out.println();
+						}
+				}
+	基本查找：数组元素无序（从头找到尾）
+	二分查找：数组有序
+			思想：每次都猜中间的那个元素，比较大或小就能减少一半的元素
+			规律：
+				1：定义最大索引、最小索引
+				2：计算中间索引
+				3：拿中间的索引的值和要查找的元素进行比较相等，就直接返回当前的中间索引
+					不相等：
+						大了：中间索引的左边找
+						小了：中间索引的右边找
+				4：重新获取最小索引或最小索引
+						大了 在左边找
+							max=mid-1
+						小了 在右边找
+							min=mid+1;
+				5:反回2的位置继续
+			代码：
+				  private static int binarySearch0(int[] a, int fromIndex, int toIndex,
+                                     int key) {
+					int low = fromIndex;
+					int high = toIndex - 1;
+
+					while (low <= high) {
+						int mid = (low + high) >>> 1;
+						int midVal = a[mid];
+
+						if (midVal < key)
+							low = mid + 1;
+						else if (midVal > key)
+							high = mid - 1;
+						else
+							return mid; // key found
+					}
+					return -(low + 1);  // key not found.
+				}
+			注意事项：必须是排好序的。不能用先排序在查找
+Arrays类：
+	构造方法：无构造方法针对数组操作的工具类：
+	方法：
+		public static String toString(int a[])把数组转成字符串
+		public static void sort(int a[])对数组进行排序(是用快速排序生成的)
+		public static int binarySearch(int [] a,int key)二分查找
+		开发原则：
+			只要是对象，我们就判断是否为空
+	将100转换成二进制、八进制、十六进制
+		System.out.println(Integer.toBinaryString(100));
+		System.out.println(Integer.toOctalString(100));
+		System.out.println(Integer.toHexString(100));
+	int类型的最大值和最小值
+		System.out.println(Integer.MAX_VALUE);
+		System.out.println(Integer.MIN_VALUE);
+	为了对基本数据类型进行更多的操作，更方便的操作，Java就针对每一种基本数据类型提供了对应的类类型
+	包装类类型
+	byte  		Byte
+	short  		Short
+	int     	Integer
+	long 		Long
+	float 		Float
+	double 		Double
+	char  		Character
+	boolean		Boolean
+	常见的功能就是基本数据类型与字符串之间的转换
+	Integer 父类为number
+		Integer 类在对象中包装了一个基本类型 int 的值。Integer 类型的对象包含一个 int 类型的字段。 
+			此外，该类提供了多个方法，能在 int 类型和 String 类型之间互相转换，还提供了处理 int 类型时非常有用的其他一些常量和方法。
+	Integer的构造方法：
+		public Integer（int i）：将int类型转换成Integer
+		public Integer （String s）将字符串转换成Integer  串必须是数字构成，不能是字符构成的
+		int 到String 转换
+			1：字符串的拼接 String s1=""+number
+			2:使用 String.valueOf(bumber)
+			3:使用toString()方法 new Integer（number）.toString();
+			4:Integer的方法toString(number)	Intrger.toString(number)
+		String 到 int转换
+			1：String----Integer---int   int x=new Integer(string).intValue();
+			2:int s=Integer.parseInt(string);
+	十进制到其他进制的方法
+		public static String toString（int i，int radix）;
+		eg:System.out.println(Integer.toString(100,3))将100转成3进制
+			进制的范围2到36因为0---9 A----Z一共有36 个数
+	其他进制到十进制的转换：
+		public static int parseInt（String s,radix）
+	JDK5的新特性
+		自动装箱：把基本类型转换成包装类型
+		自动拆箱：把包装类型转换成基本类型
+			Integer i=100
+		在使用时出现Integer i=null 会出现nullPointerException建议先判断在使用
+		通过查看源码，针对-128到127之间的数据做了一个缓冲池，如果
+			数据是该范围内的，每次并不创建新的空间
+			
+Character类	：
+	Character 类在对象中包装一个基本类型 char 的值。Character 类型的对象包含类型为 char 的单个字段。 
+	此外，该类提供了几种方法，以确定字符的类别（小写字母，数字，等等），并将字符从大写转换成小写，反之亦然。
+	构造方法：
+		Character（char value）
+	方法：都为静态：
+		public static boolean isUpperCase(char ch):判断给定的字符是否是大写字符
+		public static boolean isDigit(char ch)确定指定字符是否为数字。	
+		public static boolean isLowerCase(char ch)确定指定字符是否为小写字母。
+		public static char toLowerCase(char ch)使用取自 UnicodeData 文件的大小写映射信息将字符参数转换为小写。
+		
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

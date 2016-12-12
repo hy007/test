@@ -1,0 +1,23 @@
+GUI(图形用户界面)Graphical User Interface
+CLI(命令行用户接口)Command Line User Interface
+java.awt:Abstract Window TooklKit(抽象窗口工具包)需要调用本地系统方法
+实现功能，属于重量级控件
+JavaX.swing :在awt的基础上，建立的一套图形界面系统，其中
+Java和javax的区别Java是标准javax扩展提供了更多的组件，而且完全由Java实现。增强了移植性，属轻量级控件。
+component 是一个具有图形表示能力的对象，可在屏幕上显示，并可与用户进行交互。典型图形用户界面中的按钮、复选框和滚动条都是组件示例。
+Container：为容器，是一个特殊的组件，该组件中可以通过add方法添加其他组件进来。
+窗体本身是多线程：
+	窗体可见的方法：f.show();
+					Frame f=new Frame();
+					f.setSize(400, 300);
+					f.setTitle("胡勇文件");
+					//f.show();
+					f.setVisible(true);
+					f.setLocation(450, 300);
+	窗口关闭机制：事件监听机制：
+		A:事件源 事件发生的地方 （具体的对象）
+		B:事件   就是要发生的事情 （一般为一个接口）
+		C:事件处理 就是针对发生的事情做出的处理方案(具体的一个类应实现事件的接口)
+		D:事件监听： 事件源与事件关联起来 对象注册监听
+适配器：当接口中的无用方法比较多时：实现接口，使用类继承该实现的接口方法并重写
+布局：

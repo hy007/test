@@ -1,0 +1,114 @@
+Object 是类的根类每个类都直接或间接继承object类
+哈希值是根据哈希算法计算出来放入一个值，这个值和地址值不是真正的地
+toHexString(int i)：把一个整数转化成16进制表示的字符串
+注意直接输出一个对象的名称其实就是调运该对象的toString方法
+==：
+	基本类型：比较的是值相等
+	引用类型：比较的就是地址值是否相等
+
+equals
+引用类型：
+	默认情况下比较地址值
+	一般来说比较地址值意义不大，应该重写equals方法；重写方法一般比较成员变量的值
+	自动生成可以
+	String中的equals是重写Object类后的方法比较的是两个字符串是否相等
+	为了提高效率
+	if（this==obj）
+	return true;
+	instanceof表示判断对象名是否是该类的一个对象
+	if（obj instanceof Student）
+	重写的代码优化：提高效率，提高程序的健壮性
+	protectored void fianlize():当垃圾回收器确定不存在对该对象的更多引用时，由对象的垃圾回收器调用此方法。
+		子类重写 finalize 方法，以配置系统资源或执行其他清除。
+		protected Object clone()
+                throws CloneNotSupportedException创建并返回此对象的一个副本。“副本”的准确含义可能依赖于对象的类。这样做的目的是，对于任何对象 x，表达式： 
+	x.clone() != x为 true，表达式： 
+	x.clone().getClass() == x.getClass()也为 true，但这些并非必须要满足的要求。一般情况下： 
+	x.clone().equals(x)为 true，但这并非必须要满足的要求。
+标记接口，告诉我们实现该接口的类就可以实现对象的复制了
+Scanner ：
+		System类下有一个静态的成员方法 in  public static final InputStream
+		system.in标准的输入流Scanner（inputStream score）
+	方法：基本格式：
+	public boolean hasNextXXX();判断是否是某种类型的元素
+	public  XXX nextXX();获取下一个元素
+	java.util.InputMismatchException此异常表示输入的跟接受的参数不匹配
+	先获取数值后获取一个字符串就会出现问题
+	主要原因是换行符的问题
+	解决办法
+		A:获取一个数值后，在创建一个新的键盘录入对象获取字符串
+		B:把所有的数据先按字符串获取，然后你要什么，对应的转换成什么。
+		C:先输数值然后加空格在输入字符串即可解决
+字符串：有多个字符组成的一串数据，也可以看成是一个字符数组
+		字符串是常量；它们的值在创建之后不能更改。字符串缓冲区支持可变的字符串。
+		因为 String 对象是不可变的，所以可以共享。
+		String 的构造方法：
+			public String（）空构造
+			public String（byte[] bytes）:把字节数组转换成字符串
+			public String（byte[] bytes，int offset，int length）:把字节数组的一部分转换成字符串
+			public String (char [] char):把字符数组转换成字符串
+			public String (char [] char，int offset，int length):把字符数组的一部分转换成字符串
+			public String（String a）把字符串常量值转换成字符串
+		String的特点：一旦被赋值就不能改变
+					  字符串直接赋值的方式是先到字符串常量池里面去找，如果有就直接返回，
+					  没有就创建返回
+				面试题：
+				String s=new String ("Hello")与String s=“Hllo”的区别：
+					前者创建两个（堆和方法区）或1各后者1各或0个	（方法区）
+					字符串如果变量相加，先开空间，在拼接
+					字符串如果是常量相加，是先加，然后在常量池找，如果有则直接返回否则就创建
+		String的功能：
+					A:字符串的判断功能：
+						boolean equals (object obj):比较字符串的内容是否相同(不区分大小写)
+						boolean equalsIgnoreCase(String str):比较字符串的内容是否相同(区分大小写)
+						boolean contains(String str):判断大字符串中是否包含小的字符串
+						boolean startsWith(String str):判断以str开头的
+						boolean endWith(String str)：判断以str结尾的
+						boolean isEmpty():判断字符串是否为空
+							注意： 字符串内容为空是指对象存在值为空String s="";
+									字符串对象为空String s=null
+					B:字符串的获取功能：
+						public int length():获取字符串的长度
+						public charAt(int index);返回索引处位置的字符
+						public indexOf(int ch)：返回指定字符在此字符串中第一次出现处的索引
+						public indexOf(String  str)：返回指定字符串在此字符串中第一次出现处的索引
+						public indexOf(int ch,int fromIndex)：返回指定子字符在此字符串中第一次出现处的索引，从指定的索引开始。
+						public indexOf(String str,int fromIndex)：返回指定子字符串在此字符串中第一次出现处的索引，从指定的索引开始。
+						String substring(int start)：返回一个新的字符串，它是此字符串的一个子字符串。
+															该子字符串从指定索引处的字符开始，直到此字符串末尾。
+						String substring(int start,int end)：返回一个新字符串，它是此字符串的一个子字符串。
+																该子字符串从指定的 beginIndex 处开始，直到索引 endIndex - 1 处的字符。
+																因此，该子字符串的长度为 endIndex-beginIndex。 
+					C:字符串的转换功能：
+						public byte[] getBytes();把字符串转换成字节数组
+						public char[] toCharArray();把字符串转换成字符数组
+						public String valueof(char[] chs)：把字符数组转换成字符串
+						public String valueof(int i)：把int类型的数据转换成字符串
+							注意：String类的valueOf方法可以吧人员类型的数组转换成字符串
+						public String toLowerCase();把字符串转换成小写
+						String toUpperCase();把字符串转换成大写  产生一个新串旧串不变
+						String concat(String str):把字符串拼接
+					D:字符串的其他功能：
+						替换功能：
+							public String replace(char old,char new )替换某一字符
+							public String replace(String old,String new )替换某一字符串
+						去除字符串两空格：
+							public String trim();去除字符串两端空格功能
+						按字典顺序比较两个字符串：
+							public int comparetoTo(String str)
+							public int comparetoToIgnoreCase(String str):
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

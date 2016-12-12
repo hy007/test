@@ -1,0 +1,106 @@
+File类：文件和目录路径名的抽象表示形式。
+	构造方法：
+		public File(File parent,String child)根据 parent 抽象路径名和 child 路径名字符串创建一个新 File 实例。“根据一个父File对象和一个子文件/目录得到File对象”
+		public File(String pathname)通过将给定路径名字符串转换为抽象路径名来创建一个新 File 实例。“根据路径得到File对象”
+			如果给定字符串是空字符串，那么结果是空抽象路径名。
+		public final class Stringextends Objectimplements Serializable, Comparable<String>, CharSequenceString 类代表字符串。
+			Java 程序中的所有字符串字面值（如 "abc" ）都作为此类的实例实现。 
+		public File(URI uri)通过将给定的 file: URI 转换为一个抽象路径名来创建一个新的 File 实例。
+	基本功能：
+		创建功能：
+			public boolean createNewFile()：创建文件
+			public boolean mkdir()创建文件加	如果存在则返回false
+			public boolean mkdirs()创建文件加，如果父文件加不存在系统会帮你创建出来
+			注意：要想在某个目录下创建内容，该目录首先必须存在
+			如果没有写路径系统默认为当前工作空间的项目路径
+			Java中的删除不走回收站
+			删除文件夹时该文件夹不能包含文件文件
+		删除功能：
+			public boolean delete()：
+		重命名功能：
+			public boolean renameTo(File dest)重命名如果路径名相同就是改名，
+				如果路径名不同就是改名并剪切
+		判断功能：
+			public boolean isAbsolute()测试此抽象路径名是否为绝对路径名
+			public boolean isDirectory()判断是否是文件夹或目录
+			public boolean isFile()判断是否是文件
+			public boolean isHidden()判断是否隐藏
+			public boolean exists()判断是否存在
+			public boolean equals(Object obj)测试此抽象路径名与给定对象是否相等。
+			public boolean canExecute()测试应用程序是否可以执行此抽象路径名表示的文件。
+			public boolean canRead()判断是否能可写
+			public boolean canWrite()判断是否可读
+		获取功能：
+			基本获取功能：
+				public String getAbsolutePath()获取绝对路径
+				public String getPath()获取相对路径
+				public String getName()获取名字
+				public long length()获取长度(字节的个数)
+				public long lastModified()获取最后一次修改的时间返回的是毫秒值
+			高级获取功能：
+				public String[] list()返回一个字符串数组，这些字符串指定此抽象路径名表示的目录中的文件和目录。 
+				所有文件或文件夹的数组
+				public File[] listFiles()返回一个抽象路径名数组，这些路径名表示此抽象路径名表示的目录中的文件。 
+				返回的是文件对象数组
+递归思想：能用循环的尽量不要用递归
+					方法本身调用方法本身的现象
+		注意事项：递归一定要有出口，否则就是死循环
+				  递归的次数不能太多，否则就会出现内存溢出
+				  构造方法不能递归使用
+			举例：A:从前有座山，山里有座庙....
+				  B:我们学编程--高新就业--挣钱--娶媳妇--生孩子--放羊--挣钱--...
+				递归实现阶乘：
+					public static int jiecheng(int n){
+							if(n==0||n==1){
+								return 1;
+							}else{
+								return jiecheng(n-1)*n;
+							}
+						}
+				实现斐波拉西数列：
+				public static  int fbl(int n){
+						if(n==1||n==2){
+							return 1;
+						}else{
+							return fbl(n-1)+fbl(n-2);
+						}
+					}
+					public static int prin(int n){
+						int i=1;
+						int j=1;
+						for(int i1=2;i1<n;i1++){
+							int m=i;
+							i=j;
+							j=m+j;
+						}
+						return j;
+					}
+				在一个盘符下面找指定的后缀名文件
+				private static void getPath(File fileFile ) {
+					File []files=fileFile.listFiles();
+					for (File file : files) {
+						if(file.isDirectory()){
+							getPath(file);
+						}else{
+							if(file.getName().endsWith(".java"));
+							System.out.println(file.getAbsolutePath());
+							
+							}
+						}
+					}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

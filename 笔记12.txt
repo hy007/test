@@ -1,0 +1,82 @@
+字符流
+	因为字节流操作中文不太方便
+	字节流读取中文可能出现的小问题：
+	转换流的出现
+	字符流=字节流+编码表
+编码表：有现实世界的字符和对应的数组组成的一张表
+		ASCII表：用一个字节的7字节表示一个字符其中最高位为符号位，其余位为数值位
+		ISO-8859-1：拉丁码表 8位表示一个数据
+		GB2312：简体中文
+		gbk:中国的中文编码表的升级，融合了更多的中文文字符号
+		gb18030：GBK的取代版本
+		Unicode：国际标准码，融合了多种文字所有的文字都用两个字节来表示，Java语言使用的就是Unicode
+		UTF-8：最多用三个字节来表示一个字符，能用一个的就用一个一个表示不了的就用二个，实在不行就用三个
+		BIG-5：通用于台湾、香港的一繁体自编码方案，俗称“大五码”
+		String(byte[] bytes, Charset charset)：通过指定的字符集解码字节数组
+		public byte[] getBytes(Charset charset)：使用指定的字符集把字符串编码为字节数组
+		解码：把 看不懂的变成看的懂得
+		byte[]----String 
+		编码：把看的懂得变成看不懂的
+		String----byte[]
+		Windows默认的编码为GBK
+在IO流里面做字符编码使用
+把字节流转换为字符流：
+	public OutputStreamWriter(OutputStream out)创建使用默认字符编码的 OutputStreamWriter。写数据
+		public void write(char[] cbuf,int off,int len)写入字符数组的某一部分。
+		public void write(int c)throws IOException写入单个字符。 
+		public void write(String str,  int off, int len)写入字符串的某一部分。
+		public void write(char[] cbuf)写一个字符数组
+		public void write(String str)写一个自符串
+		public void flush()刷新该流的缓冲
+		public void close()关闭此流，但要先刷新它。
+	public OutputStreamWriter(OutputStream out, Charset cs)创建使用给定字符集的 OutputStreamWriter。 
+	public InputStreamReader(InputStream in)创建一个使用默认字符集的 InputStreamReader。 
+		public int read():一次读取一个字符
+		public inr read(char[] chs):一次读取一个字符数组
+	public InputStreamReader(InputStream in, String charsetName) throws UnsupportedEncodingException
+		创建使用指定字符集的 InputStreamReader。 
+转换流的简便写法：
+	FileReader：用来读取字符文件的便捷类。此类的构造方法假定默认字符编码和默认字节缓冲区大小都是适当的
+	FileWriter：用来写入字符文件的便捷类。此类的构造方法假定默认字符编码和默认字节缓冲区大小都是可接受的。
+	由于我们常见的操作都是本地默认的编码，所有不用指定编码
+	而转换流的名字有点长，所以，Java提供了器子类的供我们使用
+	OutputStreamWriter =FileOutputStream+编码表(GBK)
+	FileWrite =FileOutputStream+编码表
+	InputStreamReader =FileOutputStream+编码表(GBK)
+	FileReder=FileOutputStream+编码表(GBK)
+字符缓冲流：
+	BufferedWriter：将文本写入字符输出流，缓冲各个字符，从而提供单个字符、数组和字符串的高效写入。 
+		可以指定缓冲区的大小，或者接受默认的大小。在大多数情况下，默认值就足够大了。
+		构造方法：
+			public BufferedWriter(Writer out)创建一个使用默认大小输出缓冲区的缓冲字符输出流。 
+	BufferedReader:从字符输入流中读取文本，缓冲各个字符，从而实现字符、数组和行的高效读取。 
+		可以指定缓冲区的大小，或者可使用默认的大小。大多数情况下，默认值就足够大了
+			public BufferedReader(Reader in)创建一个使用默认大小输入缓冲区的缓冲字符输入流。 
+字符流的特殊方法：
+	BufferedWriter:
+		public void newLine():根据系统来决定换行符
+	BufferedReader:
+		public void readLine():一次读一行数据读取一个文本行。通过下列字符之一即可认为某行已终止：换行 ('\n')、回车 ('\r') 或回车后直接跟着换行。 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+		

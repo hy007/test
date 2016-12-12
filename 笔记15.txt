@@ -1,0 +1,150 @@
+多线程：
+	如果程序只有一条执行路径那么该程序只有单线程程序
+	如果程序有多条执行路径，那么该程序就是多线程程序
+进程和线程的概述：
+	进程：正在运行的程序，是系统进行资源分配和调用的独立单位。每个进程都有自己的内存空间和系统资源
+	多进程：单进程的计算机只能做一件事情例如：DOS系统，现在的计算机可以做多件事情可以带一个时间段内执行多个任务
+			多进程可以提高CPU的使用率。
+	线程：在一个进程内又可以执行多个任务，而这每一个任务可以看成是一个线程
+		线程是程序的执行单元，(执行路径)是程序使用CPU的最基本单元
+	多进程是为了提高程序的使用率，多个进程在抢CPU的资源时可以提高抢到CPU的资源
+		线程的执行有随机性
+	并行：逻辑上同时发生，指在某一时间内同时运行多个程序
+	并发：物理上同时发生，指在某一时间点上同时运行多个程序
+Java的运行原理：
+	有Java命令启动JVM，JVM启动相当于创建一个进程接着又该进程创建了一个主线程去调用main方法
+	JVM是多线程的原因是垃圾回收线程要先启动，否则很容易出现内存溢出
+	所有最低有两个线程(即垃圾回收器线程和主线程)
+Thread类：线程 是程序中的执行线程。Java 虚拟机允许应用程序并发地运行多个执行线程。
+方法一：
+		创建新执行线程有两种方法。一种方法是将类声明为 Thread 的子类。
+		分配并启动该子类的实例
+		该子类应重写 Thread 类的 run 方法。
+			   class PrimeThread extends Thread {
+			 long minPrime;
+			 PrimeThread(long minPrime) {
+				 this.minPrime = minPrime;
+			 }
+	 
+			 public void run() {
+				 // compute primes larger than minPrime
+				  . . .
+			 }
+		 }
+			然后，下列代码会创建并启动一个线程： 
+			 PrimeThread p = new PrimeThread(143);
+			 p.start();
+	
+		run方法包含被线程执行的代码 一般来说被线程执行的代码肯定是比较耗时的。比如循环或递归
+		因为run()方法的直接调用其实就相当于普通方法的方法调用，所以为单线程的效果
+		多线程的效果为start()方法。
+		面试题：run()和start()的区别：
+		run()：仅仅是封装被线程执行的代码，直接调用的是普通方法
+		start():首先启动了线程，然后再有JVM去调用该线程的run()方法
+		IllegalThreadStateException 非法的线程状态异常
+		MyThread.start();
+		MyThread.start();
+		以上现象相当于my线程被调用了两次。而不是线程启动了两次
+		public final String getName() 获取线程名称
+		public final void setName(String name)设置线程的名称
+		public static Thread currentThread()：拿到main方法的线程名字：
+	Java使用抢占式(优先级的模式)
+		如何设置优先级
+			public final void setPriority(int newPriority)更改线程的优先级，多次运行才能看到效果
+			IllegalArgumentException 非法参数
+		如何获取线程的优先级
+			public final int getPriority()返回线程的优先级。
+			线程默认优先级是5
+			最高优先级10，最低优先级1
+线程控制功能：
+	public static void sleep(long millis)：线程休眠
+	public final void join(long millis)：等待线程终止
+	public static void yield()暂停当前正在执行的线程对象，并执行其他线程。 (线程礼让)
+		让多个线程的执行更和谐，但不能靠他保证一人一次
+	public final void setDaemon(boolean on)将该线程标记为守护线程或用户线程。当正在运行的线程都是守护线程时，Java 虚拟机退出。 
+		该方法必须在启动线程前调用。后台线程
+	中断线程
+		public final void stop()不安全，已过时
+		public void interrupt()中断线程。思想是吧线程的状态终止抛出一个异常InterruptedException
+面试题：线程的生命周期：
+	新建：创建线程对象
+	就绪：线程有执行资格但没有执行权
+	运行：线程有执行权也有执行资格
+		阻塞：由于一些操作让线程处于了该状态，没有执行权
+		而另一些操作却可以把它给激活，激活后处于就绪状态
+	死亡：线程对象变成垃圾，等待被释放
+		start()     获取到了CPU的执行权           run()结束
+	新建------->就绪--------------------->运行---------------------->死亡
+					|						|	中断线程				
+			sleep()	|				sleep() |wait()
+					|						|
+					----------------------阻塞
+	 
+方法二：
+		声明实现 Runnable 接口的类
+		该类然后实现 run 方法。
+		然后可以分配该类的实例，
+		在创建 Thread 时作为一个参数来传递并启动。
+		class PrimeRun implements Runnable {
+			 long minPrime;
+			 PrimeRun(long minPrime) {
+				 this.minPrime = minPrime;
+			 }
+	 
+			 public void run() {
+				 // compute primes larger than minPrime
+				  . . .
+			 }
+		 }
+	然后，下列代码会创建并启动一个线程： 
+		 PrimeRun p = new PrimeRun(143);
+		 new Thread(p).start();
+	 每个线程都有一个标识名，多个线程可以同名。如果线程创建时没有指定标识名，就会为其生成一个新名称。  
+	由于实现接口的方法可以间接使用方法Thread.currentThread().getName() 
+	 实现接口的方式的好处：
+	 A:可以避免由于Java单继承带来的局限性
+	 B:适合多个相同程序代码处理同一个资源的情况，把线程同程序的代码，数据有效分离，较好的体现了面向对象的设计思想
+举例：买票程序：
+	相同票买多次：
+	CPU的每次的操作都是原子性的
+	票的次数出现负数：
+	随机性和延迟性
+线程安全的原因：
+	A:是否是多线程环境
+	B:是否有共享数据
+	C:是否有多条语句操作共享数据
+解决线程安全的问题：
+	只能解决多条语句操作共享数据的条件：把多条语句操作共享数据的代码宝成一个整体让某个线程执行的
+	时候别人不能操作
+Java提供了同步机制
+同步代码块：
+		格式：synchronized(对象){
+		需要同步代码块(多条语句操作共享数据)
+		}
+	同步可以解决安全问题的根本原因就在那个对象上。该对象如同锁的功能
+	 要求多个线程是同一把锁
+	同步的特点：
+		前提：多个线程
+		解决问题的时候注意：多个线程使用的是同一所对象
+	同步的好处：
+		同步出现解决了多线程的安全问题。
+	同步的弊端：
+	当现场相当多事，因为每个线程都会去判断锁上的资源所以特别浪费资源
+	所以系统效率比较低。
+	A:同步代码块的对象是任意对象
+	Ｂ：同步方法的格式及锁对象的问题　
+		将同步关键字加载到方法之前
+		同步方法的锁对象：是this
+		静态方法对象 ：当前类的class文件 当前类.class 
+　
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+
+

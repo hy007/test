@@ -1,0 +1,78 @@
+续IO流：
+Java中IO流的分类：
+	流向：
+		输入流：读取数据
+		输出流：写入数据
+	数据类型：
+		字节流：
+			字节输入流：读取数据 InputStream:此抽象类是表示字节输入流的所有类的超类。 
+			字节输出流：写入数据 OutputStream:此抽象类是表示输出字节流的所有类的超类。
+				输出流接受输出字节并将这些字节发送到某个接收器。
+				向文件写入用XXXoutputStreamFileOutputStream 用于写入诸如图像数据之类的原始字节的流。
+				XXXInputStream
+				XXXReader
+				XXXWriter
+		字符流：文本文件，用记事本打开可以读懂就用字符流，如果什么都不知道就用字节流
+			字符输入流：读取数据 Reader
+			字符输出流：写入数据 Writer
+			默认情况按数据类型分：
+			FileOutputStream的构造方法
+public FileOutputStream(File file)创建一个向指定 File 对象表示的文件中写入数据的文件输出流。
+public FileOutputStream(String name) throws FileNotFoundException创建一个向具有指定名称的文件中写入数据的输出文件流
+创建字节输出流对象做了一下几件事：
+	A:调用系统功能去创建文件
+	B:创建文件对象
+	C:把文件对象指向这个文件
+	close的功能：
+		A:关闭流之后流对象变成垃圾，后面不能用别不能写入
+		B:通知系统释放与该文件相关的资源
+	实现数据换行
+	windows:\r\n
+	linux:\n
+	任意记事本可以识别
+追加写入：
+	public FileOutputStream(File file,boolean append) throws FileNotFoundException
+	读入数据：
+	public FileInputStream(File file) throws FileNotFoundException通过打开一个到实际文件的
+	连接来创建一个 FileInputStream，该文件通过文件系统中的 File 对象 file 指定。
+	public int read()一次读一个字节
+	public int read(byte[] b)读取一个字节数组
+	copy文件是可以不考虑中文
+	在计算机中中文的存储为负数(第一个数)接着拼接两个字符为一个中文
+	核心代码：
+		int by=0;
+		byte[] b=new byte[1024];
+		while((by=f.read(b))!=-1){
+			System.out.print(new String(b,0,by));
+		}
+带缓冲区的字节类
+	public BufferedInputStream(InputStream in)创建一个 BufferedInputStream 并保存其参数，即输入流 in，以便将来使用。读数据
+	public BufferedOutputStream(OutputStream out)创建一个新的缓冲输出流，以将数据写入指定的底层输出流。写数据
+	构造方法可以指定缓冲区大小，但一般我们用不上，因为默认缓冲区大小就够了
+	为什么不传递一个具体的文件或者文件路径而是传递一个OutputStream
+	因为字节缓冲区，仅仅提供缓冲区，为高效而设计的，真正的读写好的的靠流的基本操作
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+ 

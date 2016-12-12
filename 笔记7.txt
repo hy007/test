@@ -1,0 +1,162 @@
+Map集合：
+	将键映射到值得对象，一个映射不能包含重复的键；每个键最多只能映射到一个值
+	(可以存储键值对的元素)键是唯一的不能重复，值是可以重复的
+Map集合和Collection集合区别：
+	Map集合存储元素是成对出现的而Collection存储元素是单个出现的可以理解为夫妻对
+	Map集合的键是唯一的知识可重复的Collection的儿子及和Set是唯一的,List是可重复的光棍
+	注意：
+		Map集合的数据结构针对键有效，跟值无关
+		Collection集合的数据结构是针对元素有效
+Map集合功能概述：
+	1：添加功能：
+		V put(K key,V value):添加元素
+		如果键是第一次存储，就直接存储元素返回null，
+		如果不是第一次存储，就直接吧以前的值替换掉
+	2：删除功能：
+		void clear():移除所有的键值对
+		V remove(Object key):根据键删除键值对元素，并把值返回
+	3：判断功能：
+		boolean containsKey(Object key):判断集合是否包含指定的键
+		Boolean containsValue(Object value):判断集合是否包含指定的值
+		boolean isEmpty()判断集合是否为空
+		
+	4：获取功能：
+		Set<Map.Entry<K,V>>entrySet():返回键值对对象的集合
+		V get(Object key)；根据键获取值
+		Set<K> keySet():获取集合中所有键的集合
+		Collection<V> values()获取集合中所有值得集合
+	5：长度功能：
+		int size():返回集合中键值对的对数
+构造方法：
+	public HashMap(Map<? extends K,? extends V> m)构造一个映射关系与指定 Map 相同的新 HashMap。所创建的 HashMap 具有默认加载因子
+	(0.75) 和足以容纳指定 Map 中映射关系的初始容量。 
+Map的遍历：
+	HashMap<Integer,String> hashMap=new HashMap<Integer,String>();
+	两种遍历：
+		Set<Entry<Integer, String>> set=hashMap.entrySet();
+		for (Entry<Integer, String> entry : set) {
+			System.out.println(entry.getKey()+"\t"+entry.getValue());
+		}
+		System.out.println("---------------------------");
+		Set<Integer>integers=hashMap.keySet();
+		for (Integer integer : integers) {
+			System.out.println(integer+"\t"+hashMap.get(integer));
+		}
+	方式一：
+		A:获取所有的键
+		B:遍历键的集合，获取得到每一个键
+		C:根据键找值
+	方式二：
+		A:获取所有键值对对象的集合
+		B:遍历键值对对象的集合，得到每一个键值对对象
+		C:根据键值对对象获取键和值
+HashMap集合：是基于哈希表的Map接口的实现。
+			哈希表的作用是用来保证键的唯一性的
+			注意：
+			//下面是八进制的数不能超过008
+			hashMap.put(001, "曹操");
+LinkeHashMap集合：
+	Map 接口的哈希表和链接列表实现，具有可预知的迭代顺序
+	有哈希表保证唯一性
+	有链表保证有序(存储和取出的顺序一致)
+TreeMap集合：
+	是基于红黑树的Map接口的实现
+Hashtable 是同步的效率比较低
+HashMap和Hashtable的区别：
+HashMap：线程不安全，效率高。允许null键和null值		
+Hashtable 是同步的效率比较低 	不允许null键和null值		
+Collections类：是针对集合操作的类静态方法
+Collection和Collections区别：前者为接口，后者为针对集合操作的工具类
+方法：
+	public static <T extends Comparable<? super T>> void sort(List<T> list)根据元素的自然顺序 对指定列表按升序进行排序。
+		如果同时又自然排序和基排序使用基排序
+	public static <T> int binarySearch(List<? extends Comparable<? super T>> list,
+                                   T key)使用二分搜索法搜索指定列表，以获得指定对象。			
+	public static <T> T max(Collection<? extends T> coll,Comparator<? super T> comp)根据指定比较器产生的顺序，返回给定 collection 的最大元素。
+	public static void reverse(List<?> list)反转指定列表中元素的顺序。	
+	public static void shuffle(List<?> list)使用默认随机源对指定列表进行置换。所有置换发生的可能性都是大致相等的。	
+扑克
+package one;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.TreeSet;
+
+public class pukDemo {
+	public static void main(String[] args) {
+		HashMap<Integer, String>hashMap =new HashMap<Integer, String>();
+		ArrayList<Integer>arrayList=new ArrayList<Integer>();
+		String colors[] = { "♠", "♥", "♣", "♦" };
+		String number[] = {  "3","4", "5", "6", "7", "8", "9", "10",
+				"J", "Q", "k", "A", "2" };
+		int index=0;
+		for (String string : number) {
+			for(String colo:colors){
+				String puker=colo.concat(string);
+				hashMap.put(index, puker);
+				arrayList.add(index);
+				index++;
+
+			}
+		}
+		hashMap.put(index, "小王");
+		arrayList.add(index);
+		index++;
+		hashMap.put(index, "大王");
+		arrayList.add(index);
+//洗牌
+		Collections.shuffle(arrayList);
+		//發牌
+		TreeSet<Integer> liubai=new TreeSet<Integer>();
+		TreeSet<Integer> gunayu=new TreeSet<Integer>();
+		TreeSet<Integer> zhangfei=new TreeSet<Integer>();
+		TreeSet<Integer> dipai=new TreeSet<Integer>();
+		for (int i = 0; i < arrayList.size(); i++) {
+			if (i >= arrayList.size()-3) {//底牌
+				dipai.add(arrayList.get(i));
+			} else if (i % 3 == 0) {
+				liubai.add(arrayList.get(i));
+			} else if (i % 3 == 1) {
+				zhangfei.add(arrayList.get(i));
+			} else if (i % 3 == 2) {
+				gunayu.add(arrayList.get(i));
+			}
+		}
+		//看牌
+		lookPuker("刘备", liubai, hashMap);
+		lookPuker("关羽", gunayu, hashMap);
+		lookPuker("张飞", zhangfei, hashMap);
+		lookPuker("底牌", dipai, hashMap);
+		
+	}
+	public static void lookPuker(String name,TreeSet<Integer> ts,HashMap<Integer, String> hm){
+		System.out.println(name+"的牌是：");
+		for (Integer integer : ts) {
+			String value=hm.get(integer);
+			System.out.print(value+" ");
+		}
+		System.out.println();
+	}
+
+}
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+	
+		

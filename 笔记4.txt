@@ -1,0 +1,163 @@
+正则表达式：符合一定规则的字符串
+	public boolean matches(String regex)告知此字符串是否匹配给定的正则表达式。
+	规则字符在Java.util.regex Pattern类中
+	常见的组成规则
+		字符：
+			X 表示字符'X'任意字符表示该字符本身
+			\\反斜线字符表示一个\
+			\n换行
+			\r回车
+		字符类：
+			[a,b,c]表示 a、b、或C 
+			[^a,b,c]表示除了a、b、c、以外其他字符都可以匹配
+			[A-Za-Z]包含所有的英文字母
+			[0-9]包括0到9的所有数字
+		预定义字符类
+			.表示任何字符。我的就是.字符本身用\.
+			\d表示[0-9]
+			\D表示非数字[^0-9]
+			\w单词字符[A-Za-Z_0-9]
+				在正则表达式组成单词的东西必须用这些东西组成
+		边界匹配器：
+			^行的开头
+			$行的结尾
+			\b单词边界就是不是单词字符的地方,把单词隔开的地方
+		数量词：
+			X?表示x出现一次或一次也没有
+			X*表示X出现零次或多次
+			X+表示X出现一次或多次
+			X{n}表示X恰好出现n次
+			X{n,}表示x至少出现n次
+			X{n,m}表示x至少出现n次,但不会超过m次
+	正则表达式的功能：
+		判断功能：
+			public boolean matches(String regex)告知此字符串是否匹配给定的正则表达式。
+		分割功能：
+			public String[] split(String regex, int limit)根据匹配给定的正则表达式来拆分此字符串。 
+			此方法返回的数组包含此字符串的子字符串，每个子字符串都由另一个匹配给定表达式的子字符串终止，或者由此字符串末尾终止。数组中的子字符串按它们在此字符串中出现的顺序排列。如果表达式不匹配输入的任何部分，那么所得数组只具有一个元素，即此字符串。
+			硬盘上的路径用\\表示
+				String s2="D:\\xiazai\\2013-10-24_adt-bundle-windows-x86-20130917\\Javalianxi\\src\\one";
+				String a2[]=s2.split("\\\\");
+				for (String string : a2) {
+					System.out.print(string);
+				}
+		替换功能：
+			public String replaceAll(String regex,
+               String replacement)使用给定的 replacement 替换此字符串所有匹配给定的正则表达式的子字符串。
+		获取功能：
+			必须使用使用pattern和Matcher类的使用
+			模式和匹配器的典型调用顺序
+			把正则表达式编译成模式对象
+			Pattern p=Pattern.compile("a*b");
+			通过模式对象得到匹配器对象，这个时候需要的是被匹配的字符串 
+			Matcher m=p.matcher("aaaaaab");
+			调用匹配器对象的功能
+			boolean b=m.matcher();
+			这个是判断功能，但有点麻烦
+			通过find方法查找有没有满足田间的子串group
+			注意事项：一定要先find才能group()
+Math类：包含用于执行基本数学运算的方法，如初等指数、对数、平方根和三角函数。
+	成员变量：
+		public static final double E比任何其他值都更接近 e（即自然对数的底数）的 double 值。
+		public static final double PI比任何其他值都更接近 pi（即圆的周长与直径之比）的 double 值。 
+	成员方法：
+		public static double abs(double a)返回 double 值的绝对值。如果参数为非负数，则返回该参数。如果参数为负数，则返回该参数的相反数。特殊情况如下： 
+		如果参数为正 0 或负 0，那么结果为正 0。 
+		如果参数为无穷大，那么结果为正无穷大。 
+		如果参数为 NaN，那么结果为 NaN。
+		换句话说，结果等于以下表达式的值： 
+		public static double ceil(double a)向上取整
+		public static double floor(double a)向下取整
+		public static double pow(double a,double b)a的b次幂
+		public static double random(float a)随机数
+		public static long round(double a)四舍五入
+		public static double sqrt(double a)返回正确舍入的 double 值的正平方根。
+	面试题：设计方法实现获取任意范围的随机数
+Random类：此类的实例用于生成伪随机数
+	构造方法：
+		public Random（）；没有给种子默认种子当前时间的毫秒值
+		public Random（long seed）给出固定的种子
+	成员方法：	
+		public int nextInt()返回下一个伪随机数，它是此随机数生成器的序列中均匀分布的 int 值。(int 范围内的随机数)
+			nextInt 的常规协定是，伪随机地生成并返回一个 int 值。
+			所有 232 个可能 int 值的生成概率（大致）相同。
+		public int nextInt(int n)返回一个伪随机数，它是取自此随机数生成器序列的、（0到指定数范围内的随机数）
+			在 0（包括）和指定值（不包括）之间均匀分布的 int 值。
+			注意：给定种子后每次得到的随机数是相同的，没有种子的每次的随机数都不同
+System类：
+	包含一些有用的类字段和方法。它不能被实例化。
+	方法：
+		public static void gc()运行垃圾回收器
+		public static void exit(int status)终止当前正在运行的 Java 虚拟机。
+			参数用作状态码；根据惯例，非 0 的状态码表示异常终止。
+		public static long currentTimeMillis()返回以毫秒为单位的当前时间。
+		public static void arraycopy(Object src, int srcPos, Object dest,int destPos,int length)从指定源数组中复制一个数组，
+							 复制从指定的位置开始，到目标数组的指定位置结束。
+							参数：
+								src - 源数组。
+								srcPos - 源数组中的起始位置。
+								dest - 目标数组。
+								destPos - 目标数据中的起始位置。
+								length - 要复制的数组元素的数量
+BigInterger类：
+	构造方法：
+	public BigInteger(String val)将 BigInteger 的十进制字符串表示形式转换为 BigInteger。
+	public BigInteger[] divideAndRemainder(BigInteger val)返回包含 (this / val) 后跟 (this % val) 的两个 BigInteger 的数组。
+		返回商及余数的数组
+BigDecimal类：
+	可以解决数据丢失问题，不可变的、任意精度的有符号十进制数。
+	成员方法：
+		public BigDecimal(String val)将 BigDecimal 的字符串表示形式转换为 BigDecimal。
+		不会损失任何精度
+		public BigDecimal divide(BigDecimal divisor, int scale,int roundingMode)返回一个 BigDecimal，
+			其值为 (this / divisor)，其标度为指定标度。如果必须执行舍入，以生成具有指定标度的结果，则应用指定的舍入模式
+		参数：
+			divisor -商
+			scale - 几位小数
+			roundingMode -如何舍去 
+Date类
+	构造方法：
+		public Date()分配 Date 对象并初始化此对象，以表示分配它的时间（精确到毫秒）。 根据当前默认的毫秒值创建日期对象
+		public Date(long date)根据给定的毫秒值创建日期对象
+	成员方法：
+		public long getTime();获取时间，一毫秒为单位
+		public long SetTime();设置时间
+DateFormat： 是日期/时间格式化子类的抽象类，它以与语言无关的方式格式化并解析日期或时间。
+	Date--String（格式化）
+	public final String format(Date date)将一个 Date 格式化为日期/时间字符串。
+	String --Date（解析）
+	public Date parse(String text,ParsePosition pos)解析字符串的文本，生成 Date。 
+		此方法试图解析从 pos 给定的索引处开始的文本。如果解析成功，则将 pos 的索引更新为所用最后一个字符后面的索引
+	（不必对直到字符串结尾的所有字符进行解析），并返回解析得到的日期
+	SimpleDateFormat():默认模式
+	SimpleDateFormat(String pattern):给定模式
+		Date d=new Date();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy年M月d日H时m分s秒");
+		String s=sdf.format(d);
+		System.out.println(s);
+	注意再把一个字符串解析为日期的时候一定要对应格式
+Calendar类：
+	Calendar 类是一个抽象类，它为特定瞬间与一组诸如 YEAR、MONTH、DAY_OF_MONTH、HOUR 等 日历字段之间的转换提供了一些方法，
+			并为操作日历字段（例如获得下星期的日期）提供了一些方法
+	成员方法：
+		public int get(int field)返回给定日历字段的值.每个日历字段都是静态长远变量，并且是int类型
+		public abstract void add(int field,int amount)根据日历的规则，为给定的日历字段添加或减去指定的时间量。例如，要从当前日历时间减去 5 天，可以通过调用以下方法做到这一点： 
+			add(Calendar.DAY_OF_MONTH, -5)。根据给定的日历字段和对应的时间，来对当前的日历进行操作
+		public final void set(int year,int month,int date):设置当前日历的年月日
+		public long getTimeInMillis()返回此 Calendar 的时间值，以毫秒为单位直接返回毫秒值
+		 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

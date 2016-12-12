@@ -1,0 +1,135 @@
+操作基本数据类型的流
+DataInputStream数据输入流允许应用程序以与机器无关方式从底层输入流中读取基本 Java 数据类型。
+	应用程序可以使用数据输出流写入稍后由数据输入流读取的数据。 
+	构造方法：public DataInputStream(InputStream in)使用指定的底层 InputStream 创建一个 DataInputStream。 
+DataOnputStream数据输出流允许应用程序以适当方式将基本 Java 数据类型写入输出流中。
+	然后，应用程序可以使用数据输入流将数据读入。
+	构造方法：public DataOnputStream(OnputStream in)使用指定的底层 OnputStream 创建一个 DataOnputStream。 
+内存操作流：用于处理临时存储信息的程序结束，数据就消失
+	操作字节数组：
+		ByteArrayInputStream：ByteArrayInputStream 包含一个内部缓冲区，该缓冲区包含从流中读取的字节。
+			内部计数器跟踪 read 方法要提供的下一个字节。 
+			关闭 ByteArrayInputStream 无效。此类中的方法在关闭此流后仍可被调用，而不会产生任何 IOException。 
+		ByteArrayOutputStream：此类实现了一个输出流，其中的数据被写入一个 byte 数组。缓冲区会随着数据的不断写入而自动增长。
+			可使用 toByteArray() 和 toString() 获取数据。 
+			关闭 ByteArrayOutputStream 无效。此类中的方法在关闭此流后仍可被调用，而不会产生任何 IOException。 
+
+
+	操作字符数组
+		CharArrayReader
+		CharArrayWriter
+	操作字符串
+		StringReader
+		StringWriter
+打印流：
+	字节打印流：printStream
+	字符打印流：printWriter
+	打印流的特点：只有写数据的没有读数据的(只能操作目的地，不能操作数据源)
+				  可以注册任意数据
+				  如果启用了自动刷新能够自动刷新
+				  该流可以直接操作文本文件
+				  可以直接操作文本文件
+					FileInputStream
+					FileOutputStream
+					FileReader
+					FileWriter
+					printStream
+					printWriter
+标准输入输出流：
+System类中两个字段	
+	in
+	public static final InputStream in“标准”输入流。
+键盘的录入数据的方法：
+	A:java HelloWord hello word java 
+	B: Scanner (JDK5以后)
+	Scanner sc=new Scanner(system.in);
+	C:通过字符缓冲流包装标准输入流实现
+	BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(System.in));
+	String line=null;
+			line = bufferedReader.readLine();
+			int i=Integer.parseInt(line);
+	out
+	public static final PrintStream out“标准”输出流。
+		BufferedWriter bufferedWriter=new BufferedWriter(new OutputStreamWriter(System.out));
+		bufferedWriter.write("hellow");
+		bufferedWriter.flush();
+		bufferedWriter.close();
+	InputStream is=System.in等价
+	获取标准输出流的对象
+	PrintStrean ps=System.out等价
+	System.out.println();与ps.println()等价
+随机访问流：
+	RandomAccessFile
+		此类的实例支持对随机访问文件的读取和写入，该文件指针可以通过 getFilePointer 方法读取，并通过 seek 方法设置。
+		构造方法：public RandomAccessFile(File file,String mode)
+		throws FileNotFoundException创建从中读取和向其中写入（可选）的随机访问文件流，该文件由 File 参数指定。将创建一个新的 FileDescriptor 对象来表示此文件的连接。 
+合并流：
+SequenceInputStream流：表示其他输入流的逻辑串联。它从输入流的有序集合开始，并从第一个输入流开始读取，直到到达文件末尾，接着从第二个输入流读取，依次类推，直到到达包含的最后一个输入流的文件末尾为止。
+	构造方法：public SequenceInputStream(InputStream s1, InputStream s2)：
+序列化流：ObjectInputStream：把一个对象写入文件，或者在网络中传输
+使用序列化和反序列化是对象必须实现标记接口Serializable
+可以自动产生Id序列化值，以后对类的改动他读取以前的数据是没有问题的
+使用transient关键字表明不需要序列化的成员变量
+反序列化：ObjectOnputStream：吧文本文件中的流对象数据或者网络中的流对象还原成对象
+构造方法：public ObjectInputStream(InputStream in)throws IOException创建从指定 InputStream 读取的 ObjectInputStream。						
+类 Properties：表示了一个持久的属性集。Properties 可保存在流中或从流中加载。属性列表中每个键及其对应值都是一个字符串。 
+是可以与IO结合使用的集合类
+	构造方法：public Properties()创建一个无默认值的空属性列表。 
+	特殊功能：
+		public Object setProperty(String key, String value)	：添加元素			
+		public String getProperty(String key, String defaultValue)	获取元素		
+		public Set<String> stringPropertyNames()	获取所有键的集合		
+		public void store(Writer writer,String comments)把集合中的数据存储到文件中(这里的集合为Properties)
+		public void save(OutputStream out,String comments)	
+		public void load(Reader reader)：把文件中的数据读取到集合中(这里的集合为Properties)
+			应用：单机游戏的进度保存和加载
+			/*
+ * 我有一个文本文件(user.txt)，我知道数据是键值对形式的，但是不知道内容是什么。
+ * 请写一个程序判断是否有“lisi”这样的键存在，如果有就改变其实为”100”
+ * 
+ * 分析：
+ * 		A:把文件中的数据加载到集合中
+ * 		B:遍历集合，获取得到每一个键
+ * 		C:判断键是否有为"lisi"的，如果有就修改其值为"100"
+ * 		D:把集合中的数据重新存储到文件中
+ */
+public class PropertiesTest {
+	public static void main(String[] args) throws IOException {
+		// 把文件中的数据加载到集合中
+		Properties prop = new Properties();
+		Reader r = new FileReader("user.txt");
+		prop.load(r);
+		r.close();
+
+		// 遍历集合，获取得到每一个键
+		Set<String> set = prop.stringPropertyNames();
+		for (String key : set) {
+			// 判断键是否有为"lisi"的，如果有就修改其值为"100"
+			if ("lisi".equals(key)) {
+				prop.setProperty(key, "100");
+				break;
+			}
+		}
+
+		// 把集合中的数据重新存储到文件中
+		Writer w = new FileWriter("user.txt");
+		prop.store(w, null);
+		w.close();
+	}
+}
+NIO包下的IO流：
+JDK1.7的新特性：
+	Files：提供了静态方法供我们使用
+		public static long copy(path sourxe,OutputStream out)
+	Path：路径
+	Paths：有一个静态方法返回一个路径
+		public static long get(URI uri)
+		
+					
+					
+					
+					
+					
+					
+					
+					
